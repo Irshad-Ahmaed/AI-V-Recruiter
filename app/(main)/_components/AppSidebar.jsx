@@ -1,20 +1,22 @@
 "use client"
 import { Button } from '@/components/ui/button';
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarTrigger } from '@/components/ui/sidebar';
 import { SidebarOptions } from '@/services/Constants';
 import { Plus } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
 
-const AppSidebar = () => {
+const AppSidebar = ({hide, changeHide}) => {
     const path = usePathname();
+    const router = useRouter();
 
     return (
         <Sidebar>
-            <SidebarHeader className={'flex items-center mt-5'}>
-                <div className='flex items-center'>
+            <SidebarHeader className={'relative flex items-center mt-2'}>
+                <SidebarTrigger onClick={()=> changeHide(true)} className='right-2 top-0 absolute cursor-pointer hover:bg-gray-100 p-2 rounded-full'/>
+                <div className='flex items-center my-2 mt-5'>
                     <Image src={'/logo.png'} alt='logo'
                         width={40} height={40}
                     />
@@ -25,7 +27,7 @@ const AppSidebar = () => {
                     </h1>
                 </div>
 
-                <Button className='w-full mt-5'><Plus /> Create New Interview</Button>
+                <Button className='w-full mt-5' onClick={()=> router.push('/dashboard/create-interview')}><Plus /> Create New Interview</Button>
             </SidebarHeader>
             <SidebarContent className='mt-5'>
                 <SidebarGroup>

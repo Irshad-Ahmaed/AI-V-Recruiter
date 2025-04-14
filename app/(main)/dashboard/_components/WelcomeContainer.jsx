@@ -13,7 +13,7 @@ const WelcomeContainer = () => {
         <h2 className='text-muted-foreground'>AI Driven Interviews, Hassel-free Hiring</h2>
       </div>
       {/* You Need To Configure Next.mjs file for images */}
-      <Image src={user?.picture} alt='user_img' width={40} height={40} className='rounded-full'/>
+      <Image src={user?.picture || "/user.png"} alt='user_img' width={40} height={40} className='rounded-full'/>
     </div>
   )
 }

@@ -5,10 +5,10 @@ import { supabase } from '@/services/supabase-client';
 import { Loader2Icon } from 'lucide-react';
 import Image from 'next/image';
 import React, { useState } from 'react';
+import { toast } from 'sonner';
 
 const Login = () => {
   const [hover, setHover] = useState(false);
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const signInWithGoogle= async()=>{
@@ -20,11 +20,11 @@ const Login = () => {
 
       if(error){
         console.log('Error:', error.message);
-        setError(error.message);
+        toast.error(error.message);
       };
     } catch (error) {
       console.error('Error:', error);
-      setError(error.message);
+      toast.error(error.message);
     } finally{
       setLoading(false);
     }
@@ -48,8 +48,6 @@ const Login = () => {
           <Image src={'/login.jpg'} alt='login' width={400} height={300} className='rounded-2xl'/>
           <h2 className='text-2xl font-bold mt-5'>Welcome To AIRecruiter</h2>
           <p className='text-gray-500'>Sign In With Google</p>
-
-          {error && <span className='text-red-500 mt-2'>Error: {error}</span>}
 
           <Button className={'w-full mt-5 cursor-pointer transition-all duration-500 flex items-center justify-center'} variant={hover ? 'outline' : ''} 
             onMouseOver={()=> setHover(true)}
