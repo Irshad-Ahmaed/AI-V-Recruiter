@@ -6,11 +6,13 @@ import React, { useState } from 'react';
 import FormContainer from './_components/FormContainer';
 import QuestionList from './_components/QuestionList';
 import { toast } from 'sonner';
+import InterviewLink from './_components/InterviewLink';
 
 const CreateInterview = () => {
   const route = useRouter();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState([]);
+  const [interviewId, setInterviewId] = useState(); 
 
   const onHandleInputChange = (field, value) =>{
     setFormData(prev=>({
@@ -33,6 +35,11 @@ const CreateInterview = () => {
     }
     setStep(step+1)
   }
+
+  const onCreateLink = (interviewId) => {
+    setInterviewId(interviewId);
+    setStep(step+1);
+  }
   
   return (
     <div className='mt-10 px-10 md:px-24 lg:px-44 xl:px-56'>
@@ -43,8 +50,13 @@ const CreateInterview = () => {
       <Progress value={step * 33.33} className='my-5' />
 
       {step === 1 ? <FormContainer onHandleInputChange={onHandleInputChange} GoToNext={()=> onGoToNext()}/>
-      : step ===2 ? <QuestionList formData={formData} setStep={setStep}/>  : null
+      : step ===2 ? <QuestionList formData={formData} onCreateLink={(interviewId)=> onCreateLink(interviewId)}/> 
+      : step === 3 ? <InterviewLink interviewId={interviewId} formData={formData}/> : null
       }
+      {/* {step === 1 ? <FormContainer onHandleInputChange={onHandleInputChange} GoToNext={()=> onGoToNext()}/>
+      : step ===2 ? <InterviewLink interviewId={'3d5ff386-e4a4-441e-9f32-237e31f98324'} formData={formData}/> : null
+      } */}
+      {/* <InterviewLink interviewId={'3d5ff386-e4a4-441e-9f32-237e31f98324'} formData={formData}/> */}
     </div>
   );
 };

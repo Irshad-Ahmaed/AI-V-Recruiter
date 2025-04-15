@@ -7,16 +7,14 @@ import QuestionListContainer from './QuestionListContainer';
 import { supabase } from '@/services/supabase-client';
 import { useUser } from '@/app/provider';
 import { v4 } from 'uuid';
-import { useRouter } from 'next/navigation';
 
-const QuestionList = ({ formData, setStep }) => {
+const QuestionList = ({ formData, onCreateLink }) => {
   console.log('formData', formData);
   const [loading, setLoading] = useState(false);
   const [questionList, setQuestionsList] = useState();
   const { user } = useUser();
   const [savingData, setSavingData] = useState(false);
 
-  const router = useRouter();
 
   useEffect(() => {
     // GenerateQuestionList();
@@ -32,7 +30,7 @@ const QuestionList = ({ formData, setStep }) => {
       let FINAL_CONTENT = content.replace('```json', '').replace('```', '');
       setQuestionsList(JSON.parse(FINAL_CONTENT)?.interviewQuestions);
       console.log(FINAL_CONTENT);
-
+      toast.success("Questions created successfully");
     } catch (error) {
       toast.error(error);
     } finally {
@@ -60,16 +58,17 @@ const QuestionList = ({ formData, setStep }) => {
         toast.error(error);
         return;
       }
-      setStep(3);
+      
       console.log(data);
-      toast.success("Job role created successfully");
+      setTimeout(() => {
+        onCreateLink(interviewId);
+      }, 300);
+      
+      toast.success("Questions saved successfully");
     } catch (error) {
       toast.error(error.message);
     } finally {
       setSavingData(false);
-      setTimeout(() => {
-        router.push('/dashboard');
-      }, 300);
     }
   };
 
@@ -95,7 +94,7 @@ const QuestionList = ({ formData, setStep }) => {
         <div className='flex justify-end mt-10'>
           <Button className='cursor-pointer text-md px-6 py-2'
             onClick={() => onFinish()} disabled={savingData}>
-            {savingData && <Loader2Icon className='animate-spin size-5' />} Finish
+            {savingData && <Loader2Icon className='animate-spin size-5' />} Finalize & Generate Interview Link
           </Button>
         </div>
       }
