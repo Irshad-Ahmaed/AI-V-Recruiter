@@ -17,7 +17,9 @@ const DashboardLayout = ({ children }) => {
         router.push('/auth');
       }
     };
-    checkUser();
+    setTimeout(()=>{
+      checkUser();
+    }, 300);
 
     return ()=> checkUser;
   }, [user]);
