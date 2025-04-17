@@ -20,8 +20,7 @@ const DashboardLayout = ({ children }) => {
     setTimeout(()=>{
       checkUser();
     }, 300);
-
-    return ()=> checkUser;
+    
   }, [user]);
 
   return (
