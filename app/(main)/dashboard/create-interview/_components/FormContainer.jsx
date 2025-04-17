@@ -22,13 +22,14 @@ const FormContainer = ({ onHandleInputChange, GoToNext }) => {
         if (!data) {
             setInterviewType(prev => [...prev, type]);
         } else {
-            const result = interviewType.filter((item) => item != type);
+            const result = interviewType.filter((item) => item !== type);
             setInterviewType(result);
         }
     };
 
     return (
         <>
+            <h1 className='text-primary font-bold text-2xl w-full text-center mb-2'>1. Create Job Post</h1>
             <div className='p-5 bg-white flex flex-col rounded-lg space-y-5'>
                 {/* Input fields */}
                 <div>

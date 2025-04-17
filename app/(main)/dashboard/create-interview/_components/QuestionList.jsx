@@ -58,12 +58,11 @@ const QuestionList = ({ formData, onCreateLink }) => {
         toast.error(error);
         return;
       }
-      
-      console.log(data);
+
       setTimeout(() => {
         onCreateLink(interviewId);
       }, 300);
-      
+
       toast.success("Questions saved successfully");
     } catch (error) {
       toast.error(error.message);
@@ -74,6 +73,7 @@ const QuestionList = ({ formData, onCreateLink }) => {
 
   return (
     <div>
+      <h1 className='text-primary font-bold text-2xl w-full text-center mb-2'>2. Generating & Confirm Interview Questions</h1>
       {loading &&
         <div className='p-5 bg-blue-50 rounded-xl border border-primary flex gap-5 items-center'>
           <Loader2Icon className='animate-spin' />
