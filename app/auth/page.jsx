@@ -15,10 +15,7 @@ const Login = () => {
     try {
       setLoading(true);
       const {error} = await supabase.auth.signInWithOAuth({
-        provider:'google',
-        options:{
-          redirectTo: `${process.env.NEXT_PUBLIC_DEPLOYED_URL}/dashboard`
-        }
+        provider:'google'
       });
 
       if(error){
