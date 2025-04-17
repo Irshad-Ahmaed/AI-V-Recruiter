@@ -11,10 +11,15 @@ const DashboardLayout = ({ children }) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!user) {
-      toast.error("Please Login");
-      router.push('/auth');
-    }
+    const checkUser = () => {
+      if (!user) {
+        toast.error("Please Login");
+        router.push('/auth');
+      }
+    };
+    checkUser();
+
+    return ()=> checkUser;
   }, [user]);
 
   return (
