@@ -1,13 +1,18 @@
-import React from 'react';
+"use client";
+import React, { useState } from 'react';
 import InterviewHeader from './_components/InterviewHeader';
+import { InterviewDataContext } from '@/context/InterviewDataContext';
 
 const InterviewLayout = ({ children }) => {
+  const [interviewInfo, setInterviewInfo] = useState();
 
   return (
-    <div className='bg-secondary pb-6'>
+    <InterviewDataContext.Provider value={{interviewInfo, setInterviewInfo}}>
       <InterviewHeader />
-      {children}
-    </div>
+      <div className='bg-secondary pb-6'>
+        {children}
+      </div>
+    </InterviewDataContext.Provider>
   );
 };
 

@@ -1,70 +1,89 @@
 "use client";
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Image from 'next/image';
-import { Clock, Info, Video } from 'lucide-react';
+import { Clock, Info, Loader, Video } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { supabase } from '@/services/supabase-client';
 import { toast } from 'sonner';
+import { InterviewDataContext } from '@/context/InterviewDataContext';
 
 const Interview = () => {
     const { interview_id } = useParams();
 
-    const [interviewInfo, setInterviewInfo] = useState();
+    const [interviewData, setInterviewData] = useState();
     const [error, setError] = useState();
 
     const [userName, setUsername] = useState("");
     const [userEmail, setUserEmail] = useState("");
     const [loading, setLoading] = useState(false);
 
+    const { interviewInfo, setInterviewInfo } = useContext(InterviewDataContext);
+
+    const router = useRouter();
+
     useEffect(() => {
-        const fetchInterviewDetails = async () => {
-            try {
-                setLoading(true);
-                const { data: InterviewDetails, error } = await supabase
-                    .from('Job Postings')
-                    .select("jobPosition, duration")
-                    .eq("interviewId", interview_id);
+        interview_id && fetchInterviewDetails();
+    }, [interview_id]);
 
-                if (error) {
-                    console.error('Error fetching interview details:', error);
-                    toast.error(error.message);
-                    return;
-                }
+    const fetchInterviewDetails = async () => {
+        try {
+            setLoading(true);
+            const { data: InterviewDetails, error } = await supabase
+                .from('Job Postings')
+                .select("jobPosition, duration")
+                .eq("interviewId", interview_id);
 
-                if (InterviewDetails.length === 0) {
-                    toast.error("No Interview Found");
-                    return;
-                }
-
-                if (InterviewDetails && InterviewDetails.length > 0) {
-                    setInterviewInfo(InterviewDetails[0]);
-                }
-            } catch (error) {
+            if (error) {
+                console.error('Error fetching interview details:', error);
                 toast.error(error.message);
-            } finally {
-                setLoading(false);
+                return;
             }
-        };
 
-        fetchInterviewDetails();
-    }, []);
+            if (InterviewDetails.length === 0) {
+                toast.error("No Interview Found");
+                return;
+            }
+
+            if (InterviewDetails && InterviewDetails.length > 0) {
+                setInterviewData(InterviewDetails[0]);
+            }
+        } catch (error) {
+            toast.error(error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const onJoinInterview = async () => {
-        const { data: AllInterviewDetails, error } = await supabase
-            .from('Job Postings')
-            .select("*")
-            .eq("interviewId", interview_id);
+        setLoading(true);
+        try {
+            const { data: AllInterviewDetails, error } = await supabase
+                .from('Job Postings')
+                .select("jobPosition, duration, type, questionList")
+                .eq("interviewId", interview_id);
 
-        if (error) {
-            console.error('Error fetching interview details:', error);
+            if (error) {
+                console.error('Error fetching interview details:', error);
+                toast.error(error.message);
+                return;
+            }
+
+            if (AllInterviewDetails && AllInterviewDetails.length > 0) {
+                console.log(AllInterviewDetails[0]);
+                setInterviewInfo({
+                    userName: userName,
+                    userEmail: userEmail,
+                    interviewData: AllInterviewDetails[0]
+                });
+                router.push('/interview/' + interview_id + '/start');
+            }
+        } catch (error) {
+            console.log(error);
             toast.error(error.message);
-            return;
-        }
-
-        if (AllInterviewDetails && AllInterviewDetails.length > 0) {
-            console.log(AllInterviewDetails[0]);
+        } finally{
+            setLoading(false);
         }
     };
 
@@ -84,8 +103,8 @@ const Interview = () => {
 
                 <Image src={'/Interview_logo.png'} alt='interview_logo' width={500} height={500} className='my-6' />
 
-                <h2 className='font-bold text-xl'>{interviewInfo?.jobPosition || ""} Interview</h2>
-                <h2 className='text-muted-foreground flex gap-2 items-center mt-3'><Clock className='size-4' />{interviewInfo?.duration || ""}</h2>
+                <h2 className='font-bold text-xl'>{interviewData?.jobPosition || ""} Interview</h2>
+                <h2 className='text-muted-foreground flex gap-2 items-center mt-3'><Clock className='size-4' />{interviewData?.duration || ""}</h2>
 
                 <div className='w-full flex items-center flex-col justify-center mt-7 gap-3 text-sm'>
                     <div className='w-1/2 space-y-1 text-muted-foreground'>
@@ -117,10 +136,10 @@ const Interview = () => {
                 </div>
 
                 <Button className={'flex items-center gap-2 mt-5 font-bold w-1/3 text-sm'}
-                    disabled={!interviewInfo || loading || userName.length === 0 || !userEmail.includes("@gmail.com")}
+                    disabled={!interviewData || loading || userName.length === 0 || !userEmail.includes("@gmail.com") || userEmail.length <= 14}
                     onClick={() => onJoinInterview()}
                 >
-                    <Video className='size-4 mt-0.5' /> Join Interview
+                    {loading && <Loader className='size-4 animate-spin'/>} <Video className='size-4 mt-0.5' /> Join Interview
                 </Button>
             </div>
         </div>
