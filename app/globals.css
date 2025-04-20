@@ -128,10 +128,10 @@
 
 .wave-bar {
   display: inline-block;
-  width: 4px;
-  height: 10px;
+  width: 2px;
+  height: 5px;
   background-color: #0377fc; /* Tailwind slate-600 */
-  margin: 0 2px;
+  margin: 0 1px;
   animation: waveLine 1s infinite ease-in-out;
   transform-origin: bottom;
 }
