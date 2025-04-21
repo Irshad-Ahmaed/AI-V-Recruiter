@@ -88,7 +88,7 @@ const Interview = () => {
     };
 
     return (
-        <div className='px-10 md:px-28 lg:px-48 xl:px-64 mt-6'>
+        <div className='px-10 md:px-28 lg:px-48 xl:px-64 pt-6'>
             <div className='flex flex-col items-center justify-center p-7 border rounded-lg bg-white'>
                 <div className='flex'>
                     <Image src={'/logo.png'} alt='logo' width={100} height={100} className='size-8' />
