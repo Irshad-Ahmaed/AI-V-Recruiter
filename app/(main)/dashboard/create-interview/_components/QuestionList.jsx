@@ -17,7 +17,7 @@ const QuestionList = ({ formData, onCreateLink }) => {
 
 
   useEffect(() => {
-    // GenerateQuestionList();
+    GenerateQuestionList();
   }, [formData]);
 
   console.log(questionList);
@@ -90,7 +90,7 @@ const QuestionList = ({ formData, onCreateLink }) => {
       }
 
       {
-        !loading &&
+        !loading && questionList &&
         <div className='flex justify-end mt-10'>
           <Button className='cursor-pointer text-md px-6 py-2'
             onClick={() => onFinish()} disabled={savingData}>
