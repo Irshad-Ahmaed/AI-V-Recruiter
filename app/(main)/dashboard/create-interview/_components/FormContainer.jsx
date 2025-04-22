@@ -31,7 +31,15 @@ const FormContainer = ({ onHandleInputChange, GoToNext }) => {
         <>
             <h1 className='text-primary font-bold text-2xl w-full text-center mb-2'>1. Create Job Post</h1>
             <div className='p-5 bg-white flex flex-col rounded-lg space-y-5'>
-                {/* Input fields */}
+                {/* Company fields */}
+                <div>
+                    <h2 className='text-sm font-medium'>Company Name</h2>
+                    <Input placeholder='ex: Microsoft'
+                        className='mt-2 focus:border-0'
+                        onChange={(e) => onHandleInputChange('companyName', e.target.value)}
+                    />
+                </div>
+                {/* Job Position fields */}
                 <div>
                     <h2 className='text-sm font-medium'>Job Position</h2>
                     <Input placeholder='ex: Frontend Developer'

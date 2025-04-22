@@ -24,6 +24,7 @@ const CreateInterview = () => {
   const onGoToNext = () => {
     let missingField = '';
 
+    if(!formData.companyName) missingField += 'CompanyName';
     if(!formData.jobPosition) missingField += 'jobPosition';
     else if(!formData.jobDescription) missingField += 'jobDescription';
     else if(!formData.duration) missingField += 'duration';

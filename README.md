@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🎙️ Voice AI Interview Platform
 
-## Getting Started
+An AI-powered voice interview platform where recruiters can create job posts, generate AI-based interview questions, and allow candidates to take interviews via a voice AI agent. The agent evaluates candidate responses in real-time and provides a detailed performance report to the recruiter.
 
-First, run the development server:
+---
+
+## 🚀 Features
+
+- 🔐 Google Auth powered by Supabase
+- 📄 Create job posts easily
+- 🤖 Auto-generate interview Q/A using LLM (Large Language Model) based on job description
+- 📎 Shareable AI interview link for candidates
+- 🗣️ Voice AI agent conducts interview and evaluates performance
+- 📊 Post-interview feedback report for recruiters
+- ☁️ Supabase used for data storage and authentication
+
+---
+
+## 🏗️ Tech Stack
+
+- **Frontend**: Next.js / React.js
+- **Backend**: Supabase (PostgreSQL, Auth, Edge Functions)
+- **Voice AI**: Vapi
+- **LLM**: OpenAI GPT or similar
+- **Auth**: Google OAuth via Supabase
+
+---
+
+## 📦 Getting Started
+
+### 1. Clone the repo
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/Irshad-Ahmaed/AI-V-Recruiter
+cd AI-V-Recruiter
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install dependencies
+```sh
+npm install
+```
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### 3. Set up environment variables
+- NEXT_PUBLIC_SUPABASE_URL=
+- NEXT_PUBLIC_SUPABASE_ANON_KEY=
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- OPEN_ROUTER_API_KEY=
 
-## Learn More
+- NEXT_PUBLIC_SUPABASE_REDIRECT_URL=''
 
-To learn more about Next.js, take a look at the following resources:
+- NEXT_PUBLIC_HOST_URL='http://localhost:3000/interview/'
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- NEXT_PUBLIC_VAPI_PUBLIC_KEY=
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 4. Run locally
+```sh
+npm run dev
+```
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### App runs at: http://localhost:3000

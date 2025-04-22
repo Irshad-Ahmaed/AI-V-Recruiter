@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 
 const InterviewLink = ({ interviewId, formData }) => {
   const router = useRouter();
+  console.log('formData', formData);
 
   const url = process.env.NEXT_PUBLIC_HOST_URL + interviewId;
   const getInterviewURL = () => {
@@ -28,6 +29,45 @@ const InterviewLink = ({ interviewId, formData }) => {
     await navigator.clipboard.writeText(url);
     toast('Link copied');
   };
+
+  const shareJobPost = (platform) => {
+    const data = encodeURIComponent(JSON.stringify(formData));
+    navigator.clipboard.writeText(data);
+    toast('job position copied ');
+
+    switch (platform) {
+      case 'linkedin':
+        window.open('https://www.linkedin.com/sharing/share-offsite/', '_blank');
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  const handleShare = (platform) => {
+    const url = encodeURIComponent(process.env.NEXT_PUBLIC_HOST_URL + interviewId);
+
+    switch (platform) {
+      case 'email':
+        const subject = encodeURIComponent("Interview Invitation");
+        const body = encodeURIComponent(`Hi,\n\nYou have been invited to an interview. Please use the following link to join:\n\n${process.env.NEXT_PUBLIC_HOST_URL + interviewId}\n\nBest regards,`);
+        window.location.href = `mailto:?subject=${subject}&body=${body}`;
+        break;
+
+      case 'linkedin':
+        window.open(`https://www.linkedin.com/messaging/`, '_blank');
+        break;
+
+      case 'whatsapp':
+        window.open(`https://wa.me/?text=${url}`, '_blank');
+        break;
+
+      default:
+        break;
+    }
+  };
+
 
   return (
     <div className='flex flex-col items-center justify-center space-y-10'>
@@ -56,15 +96,33 @@ const InterviewLink = ({ interviewId, formData }) => {
         </div>
       </div>
 
+      {/* Share job post */}
       <div className='w-full bg-white p-5 rounded-lg'>
-        <h2 className='font-bold'>Share via</h2>
-        <div className='grid grid-cols-3 gap-5 mt-5'>
-          <Button variant={'outline'}><Mail className='size-4' /> Email</Button>
-          <Button variant={'outline'}><Linkedin className='size-4' /> Linkedin</Button>
-          <Button variant={'outline'}><Phone className='size-4' /> WhatsApp</Button>
+        <h2 className='font-bold'>Share Job Post</h2>
+        <div className='w-full flex items-center justify-center mt-5'>
+          <Button className={'w-1/2'} onClick={() => shareJobPost('linkedin')}>
+            <Linkedin className='size-4' /> Linkedin
+          </Button>
         </div>
       </div>
 
+      {/* Share Link */}
+      <div className='w-full bg-white p-5 rounded-lg'>
+        <h2 className='font-bold'>Share link via</h2>
+        <div className='grid grid-cols-3 gap-5 mt-5'>
+          <Button variant={'outline'} onClick={() => handleShare('email')}>
+            <Mail className='size-4' /> Email
+          </Button>
+          <Button variant={'outline'} onClick={() => handleShare('linkedin')}>
+            <Linkedin className='size-4' /> Linkedin
+          </Button>
+          <Button variant={'outline'} onClick={() => handleShare('whatsapp')}>
+            <Phone className='size-4' /> WhatsApp
+          </Button>
+        </div>
+      </div>
+
+      {/* Buttons */}
       <div className='grid grid-cols-2 gap-5 w-full'>
         <Button variant={'outline'} className={'flex items-center gap-2'} onClick={() => router.push('/dashboard')}>
           <ArrowLeft className='size-4' /> Back to Dashboard
