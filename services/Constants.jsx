@@ -6,11 +6,11 @@ export const SidebarOptions = [
         icon: LayoutDashboard,
         path: '/dashboard'
     },
-    {
-        name: 'Scheduled Interview',
-        icon: Calendar,
-        path: '/scheduled-interview'
-    },
+    // {
+    //     name: 'Scheduled Interview',
+    //     icon: Calendar,
+    //     path: '/scheduled-interview'
+    // },
     {
         name: 'All Interview',
         icon: List,

@@ -46,7 +46,7 @@ const CreateInterview = () => {
     <div className='mt-10 px-10 md:px-24 lg:px-44 xl:px-56'>
       <div className='relative flex gap-5 items-center justify-center'>
         <ArrowLeft className='size-9 cursor-pointer absolute left-0 hover:bg-gray-100 p-2 rounded-full' onClick={() => route.back()} />
-        <h2 className='font-bold text-2xl'>Create New Interview</h2>
+        <h2 className='font-bold text-center text-2xl'>Create New Interview</h2>
       </div>
       <Progress value={step * 33.33} className='my-5' />
 
