@@ -32,7 +32,6 @@ const InterviewLink = ({ interviewId, formData }) => {
 
   const shareJobPost = (platform) => {
     const { companyName, jobPosition, jobDescription } = formData;
-    const jobData = { companyName, jobPosition, jobDescription };
 
     const formattedPost =
       `🚀 **Job Opportunity at ${companyName}!**
@@ -45,7 +44,7 @@ const InterviewLink = ({ interviewId, formData }) => {
 
     navigator.clipboard.writeText(formattedPost);
     toast('job position copied ');
-    
+
     setText('Redirecting to linkedin...');
 
     setTimeout(() => {
