@@ -54,10 +54,6 @@ const CreateInterview = () => {
       : step ===2 ? <QuestionList formData={formData} onCreateLink={(interviewId)=> onCreateLink(interviewId)}/> 
       : step === 3 ? <InterviewLink interviewId={interviewId} formData={formData}/> : null
       }
-      {/* {step === 1 ? <FormContainer onHandleInputChange={onHandleInputChange} GoToNext={()=> onGoToNext()}/>
-      : step ===2 ? <InterviewLink interviewId={'3d5ff386-e4a4-441e-9f32-237e31f98324'} formData={formData}/> : null
-      } */}
-      {/* <InterviewLink interviewId={'3d5ff386-e4a4-441e-9f32-237e31f98324'} formData={formData}/> */}
     </div>
   );
 };
