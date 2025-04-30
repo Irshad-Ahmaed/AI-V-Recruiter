@@ -1,10 +1,23 @@
 "use client";
 import { useUser } from '@/app/provider';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { supabase } from '@/services/supabase-client';
 import Image from 'next/image';
-import React from 'react'
+import React from 'react';
+import { toast } from 'sonner';
 
 const WelcomeContainer = () => {
-  const {user} = useUser();
+  const { user, setUser } = useUser();
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error('Logout failed:', error);
+      return;
+    }
+    setUser(null); // clear context
+    toast.success('Logout successfully');
+  };
 
   return (
     <div className='w-full flex items-center justify-between bg-white p-5 rounded-xl'>
@@ -13,9 +26,26 @@ const WelcomeContainer = () => {
         <h2 className='text-muted-foreground'>AI Driven Interviews, Hassel-free Hiring</h2>
       </div>
       {/* You Need To Configure Next.mjs file for images */}
-      <Image src={user?.picture || "/user.png"} alt='user_img' width={40} height={40} className='rounded-full'/>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <div className="relative group w-10 h-10 rounded-full cursor-pointer overflow-hidden">
+            <Image
+              src={user?.picture || '/user.png'}
+              alt='user_img'
+              fill
+              className="object-cover rounded-full"
+            />
+            <span className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-white/40 to-transparent opacity-0 group-hover:opacity-100 group-hover:animate-glow" />
+          </div>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align='end' className='w-40'>
+          <DropdownMenuItem onClick={handleLogout} className='cursor-pointer text-red-500'>
+            Logout
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
-  )
-}
+  );
+};
 
-export default WelcomeContainer
+export default WelcomeContainer;

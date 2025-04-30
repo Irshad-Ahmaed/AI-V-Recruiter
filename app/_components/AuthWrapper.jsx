@@ -3,7 +3,6 @@ import { Loader2Icon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useUser } from "../provider";
-import { toast } from "sonner";
 
 const AuthWrapper = ({ children }) => {
   const { user, loading } = useUser();
@@ -13,9 +12,8 @@ const AuthWrapper = ({ children }) => {
   useEffect(() => {
     if (loading) return;
     
-    if (!user && path !== '/auth') {
-      toast.error("Please Login");
-      router.push("/auth");
+    if (!user && path !== '/auth' && path !== '/') {
+      router.replace("/");
     }
   }, [user, loading, router]);
 
