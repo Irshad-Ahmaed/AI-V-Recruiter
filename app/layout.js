@@ -27,9 +27,7 @@ export default function RootLayout({ children }) {
       >
         <Provider>
           <Toaster richColors position="top-right"/>
-          <AuthWrapper>
             {children}
-          </AuthWrapper>
         </Provider>
       </body>
     </html>

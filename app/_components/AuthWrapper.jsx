@@ -1,6 +1,6 @@
 "use client";
 import { Loader2Icon } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useUser } from "../provider";
 
@@ -8,14 +8,22 @@ const AuthWrapper = ({ children }) => {
   const { user, loading } = useUser();
   const router = useRouter();
   const path = usePathname();
+  const { interview_id } = useParams();
 
   useEffect(() => {
     if (loading) return;
-    
-    if (!user && path !== '/auth' && path !== '/') {
-      router.replace("/");
+
+    const publicRoutes = ['/', '/auth', `/interview/${interview_id}`];
+
+    // Only protect known routes, not missing ones
+    const isPublicRoute = publicRoutes.includes(path);
+    const isProtected = !isPublicRoute;
+
+    if (!user && isProtected) {
+      router.replace("/"); 
     }
-  }, [user, loading, router]);
+  }, [user, loading, router, path, interview_id]);
+
 
   if (loading) {
     return (
