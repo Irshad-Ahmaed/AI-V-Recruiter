@@ -82,13 +82,15 @@ const StartInterview = () => {
             setActiveRecruiter(true);
             setActiveUser(false);
             setCallActive(true);
-            setStartTimer(true); // timer set
+            setTimeout(()=>{
+                setStartTimer(true); // timer set
+            }, 1000);
         };
 
         const handleSpeechStart = () => {
             console.log("🎤 Assistant speech started");
             setActiveUser(false);
-            setActiveRecruiter(true)
+            setActiveRecruiter(true);
         };
 
         const handleSpeechEnd = () => {
@@ -200,7 +202,7 @@ const StartInterview = () => {
             <h2 className='font-bold text-xl flex justify-between'>AI Interview Session
                 <span className='flex gap-2 items-center'>
                     {/* 00:00:00 */}
-                    {!vapiStart ? <span className='text-sm'>'Connecting...'</span> : <><Timer className='size-4' /> <TimmerComponent start={startTimer} /> </>}
+                    {!startTimer ? <span className='text-sm'>Connecting...</span> : <><Timer className='size-4' /> <TimmerComponent start={startTimer} /> </>}
                 </span>
             </h2>
 

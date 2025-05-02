@@ -9,18 +9,15 @@ import { useUser } from '@/app/provider';
 import { v4 } from 'uuid';
 
 const QuestionList = ({ formData, onCreateLink }) => {
-  console.log('formData', formData);
   const [loading, setLoading] = useState(false);
-  const [questionList, setQuestionsList] = useState();
+  const [questionList, setQuestionsList] = useState([]);
   const { user } = useUser();
   const [savingData, setSavingData] = useState(false);
 
 
   useEffect(() => {
-    GenerateQuestionList();
+    formData && GenerateQuestionList();
   }, [formData]);
-
-  console.log(questionList);
 
   const GenerateQuestionList = async () => {
     setLoading(true);
@@ -32,7 +29,8 @@ const QuestionList = ({ formData, onCreateLink }) => {
       console.log(FINAL_CONTENT);
       toast.success("Questions created successfully");
     } catch (error) {
-      toast.error(error);
+      toast.error('Something went wrong');
+      console.log(error);
     } finally {
       setLoading(false);
     }
@@ -48,14 +46,16 @@ const QuestionList = ({ formData, onCreateLink }) => {
           {
             ...formData,
             questionList: questionList,
-            userId: user?.email,
+            userEmail: user?.email,
             interviewId: interviewId,
+            Valid_till: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
           },
         ])
         .select();
 
       if (error) {
-        toast.error(error);
+        toast.error('Something went wrong');
+        console.log(error);
         return;
       }
 
@@ -65,7 +65,8 @@ const QuestionList = ({ formData, onCreateLink }) => {
 
       toast.success("Questions saved successfully");
     } catch (error) {
-      toast.error(error.message);
+      toast.error('Something went wrong');
+      console.log(error);
     } finally {
       setSavingData(false);
     }
@@ -90,7 +91,7 @@ const QuestionList = ({ formData, onCreateLink }) => {
       }
 
       {
-        !loading && questionList &&
+        !loading && questionList?.length > 0 &&
         <div className='flex justify-end mt-10'>
           <Button className='cursor-pointer text-md px-6 py-2'
             onClick={() => onFinish()} disabled={savingData}>

@@ -10,6 +10,7 @@ import { supabase } from '@/services/supabase-client';
 
 const AllInterview = () => {
     const [interviewList, setInterviewList] = useState([]);
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
     const { user } = useUser();
 
@@ -19,6 +20,7 @@ const AllInterview = () => {
 
     const GetInterviewList = async () => {
         try {
+            setLoading(true);
             if (!user) {
                 toast.error("Please Login to continue");
                 return;
@@ -35,6 +37,8 @@ const AllInterview = () => {
             setInterviewList(InterviewData);
         } catch (error) {
             console.log("Error while getting interview", error);
+        } finally{
+            setLoading(false);
         }
     };
 
@@ -52,9 +56,17 @@ const AllInterview = () => {
                 )
                     :
                     <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 mt-3 gap-5'>
-                        {interviewList.map((interview, index) => (
+                        {!loading && interviewList.map((interview, index) => (
                             <InterviewListCard key={index} interview={interview} />
                         ))}
+
+                        {
+                            loading && [...Array(3)].map((_, index) => (
+                                <div className="space-y-4">
+                                    <div className="w-full h-44 bg-gray-200 animate-pulse rounded"></div>
+                                </div>
+                            ))
+                        }
                     </div>
             }
         </div>

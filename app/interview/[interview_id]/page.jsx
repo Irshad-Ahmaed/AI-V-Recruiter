@@ -13,7 +13,6 @@ const Interview = () => {
     const { interview_id } = useParams();
 
     const [interviewData, setInterviewData] = useState();
-    const [error, setError] = useState();
 
     const [userName, setUsername] = useState("");
     const [userEmail, setUserEmail] = useState("");

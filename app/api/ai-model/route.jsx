@@ -18,13 +18,18 @@ export async function POST(req) {
         });
 
         const completion = await openai.chat.completions.create({
-            model: "google/gemini-2.0-flash-exp:free",
+            model: "openai/gpt-3.5-turbo",
             messages: [
                 { role: "user", content: FINAL_PROMPT }
             ],
-        });
+        }); 
 
-        return NextResponse.json(completion.choices[0].message);
+        if (!completion?.choices || !completion.choices.length) {
+            console.error("No choices returned from OpenAI:", completion);
+            return NextResponse.json({ error: "No response from AI model" }, { status: 500 });
+        }
+
+        return NextResponse.json(completion?.choices[0]?.message);
     } catch (error) {
         console.log(error);
         return NextResponse.json(error.message);

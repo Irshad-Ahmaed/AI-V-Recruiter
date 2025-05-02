@@ -1,12 +1,15 @@
+"use client";
 import { Button } from '@/components/ui/button';
+import { supabase } from '@/services/supabase-client';
 import { ArrowRight, Clock, Copy, Send } from 'lucide-react';
 import moment from 'moment';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 const InterviewListCard = ({ interview }) => {
     const router = useRouter();
+    const [expireStatus, setExpireStatus] = useState('');
 
     const url = process.env.NEXT_PUBLIC_HOST_URL + interview?.interviewId;
     const copyLink = () => {
@@ -16,10 +19,27 @@ const InterviewListCard = ({ interview }) => {
 
     const onSend = () => {
         const subject = encodeURIComponent("Interview Invitation");
-        const body = encodeURIComponent(`Hi,\n\nYou have been invited to an interview. Please use the following link to join:\n\n${process.env.NEXT_PUBLIC_HOST_URL + interview?.interviewId}\n\nBest regards,`);
+        const body = encodeURIComponent(`Hi Candidate,\n\nYou have been invited to an interview. Please use the following link to join:\n\n${process.env.NEXT_PUBLIC_HOST_URL + interview?.interviewId}\n\n please use the same email when start your interview \n\n\n Best regards,`);
 
         window.location.href = `mailto:?subject=${subject}&body=${body}`;
     };
+
+    useEffect(() => {
+        const checkExpiration = async () => {
+            const isExpired = new Date(interview?.Valid_till) < new Date();
+            if (isExpired && interview?.Link_Expired === false) {
+                await supabase
+                    .from('Job Postings')
+                    .update({ Link_Expired: true })
+                    .eq("interviewId", interview?.interviewId);
+                setExpireStatus('Expired');
+            } else {
+                setExpireStatus(`Exp on: ${moment(interview?.Valid_till).format("MMM Do YY")}`);
+            }
+        };
+
+        checkExpiration();
+    }, [interview]);
 
 
     return (
@@ -27,7 +47,7 @@ const InterviewListCard = ({ interview }) => {
             <>
                 <div className='flex items-center justify-between'>
                     <div className='size-[25px] lg:size-[40px] bg-primary rounded-full'></div>
-                    <h2 className='text-sm'>{moment(interview?.created_at).format("MMM Do YY")}</h2>
+                    <h2 className='text-sm'>{expireStatus}</h2>
                 </div>
 
                 <div className='flex gap-0 items-center justify-between'>
@@ -51,9 +71,9 @@ const InterviewListCard = ({ interview }) => {
                     </Button>
                 </div>
             </>
-            <div onClick={()=> router.push(`/interview-details/${interview?.interviewId}`)} className='absolute hover:shadow-md top-[41%] -right-5 text-white bg-gray-200 p-3 rounded-full hover:bg-primary 
+            <div onClick={() => router.push(`/interview-details/${interview?.interviewId}`)} className='absolute hover:shadow-md top-[41%] hover:z-20 -right-5 text-white bg-gray-200 p-3 rounded-full hover:bg-primary 
                 cursor-pointer transition-colors duration-300'>
-                <ArrowRight className='size-5'/>
+                <ArrowRight className='size-5' />
             </div>
         </div>
     );

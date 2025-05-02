@@ -10,6 +10,7 @@ import InterviewListCard from './InterviewListCard';
 
 const LatestInterviewsLists = () => {
   const [interviewList, setInterviewList] = useState([]);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { user } = useUser();
 
@@ -19,12 +20,13 @@ const LatestInterviewsLists = () => {
 
   const GetInterviewList = async () => {
     try {
+      setLoading(true);
       if (!user) {
         toast.error("Please Login to continue");
         return;
       }
       const { data: InterviewData, error: InterviewError } = await supabase.from('Job Postings')
-        .select("created_at, companyName, jobPosition, duration, interviewId, Interview-feedback(userEmail)").eq('userEmail', user.email).order('id', { ascending: false }).limit(3);
+        .select("created_at, companyName, jobPosition, duration, interviewId, Valid_till, Link_Expired, Interview-feedback(userEmail)").eq('userEmail', user.email).order('id', { ascending: false }).limit(3);
 
       if (InterviewError) {
         console.log('Error while fetching interviews', InterviewError);
@@ -35,6 +37,8 @@ const LatestInterviewsLists = () => {
       setInterviewList(InterviewData);
     } catch (error) {
       console.log("Error while getting interview", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -52,11 +56,19 @@ const LatestInterviewsLists = () => {
         )
           :
           <div className='relative grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 mt-3 gap-7'>
-            {interviewList.map((interview, index) => (
+            {!loading && interviewList.map((interview, index) => (
               <InterviewListCard key={index} interview={interview} />
             ))}
 
-            { interviewList?.length >3 &&
+            {
+              loading && [...Array(3)].map((_, index) => (
+                <div className="space-y-4">
+                  <div className="w-full h-44 bg-gray-200 animate-pulse rounded"></div>
+                </div>
+              ))
+            }
+
+            {interviewList?.length > 3 &&
               <span className='absolute -top-5 right-0 text-muted-foreground text-sm cursor-pointer 
             hover:underline w-fit'
                 onClick={() => router.push('/all-interview')}
