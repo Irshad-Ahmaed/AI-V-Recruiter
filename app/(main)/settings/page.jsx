@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-const InterviewerProfile = () => {
+const SettingsPage = () => {
     const [profile, setProfile] = useState({
         userName: "",
         email: "",
@@ -238,4 +238,4 @@ const InterviewerProfile = () => {
     );
 };
 
-export default InterviewerProfile;
+export default SettingsPage;
