@@ -50,7 +50,7 @@ npm install
 
 - NEXT_PUBLIC_HOST_URL='http://localhost:3000/interview/'
 
-- NEXT_PUBLIC_VAPI_PUBLIC_KEY=
+- VAPI_PUBLIC_KEY=
 
 ### 4. Run locally
 ```sh

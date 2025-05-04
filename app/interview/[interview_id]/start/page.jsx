@@ -47,7 +47,7 @@ const StartInterview = () => {
             ?.join(', ');
 
         try {
-            const call = await vapi.start(process.env.NEXT_PUBLIC_RECRUITER_AGENT_KEY, {
+            const call = await vapi.start(process.env.RECRUITER_AGENT_KEY, {
                 variableValues: {
                     userName: interviewInfo?.userName,
                     jobPosition: interviewInfo?.interviewData?.jobPosition,
