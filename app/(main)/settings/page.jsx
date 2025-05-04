@@ -80,7 +80,7 @@ const InterviewerProfile = () => {
                 .from('Users')
                 .update({
                     userName: profile?.userName,
-                    picture: profile?.profileImage,
+                    picture: uploadedImageUrl,
                     bio: profile?.bio,
                     domain: profile?.domains,
                     yearOfInterviewExp: profile?.experienceYears,
@@ -98,7 +98,7 @@ const InterviewerProfile = () => {
             setUser({
                 ...user,
                 userName: profile?.userName || "",
-                picture: profile?.profileImage || "/user.png",
+                picture: uploadedImageUrl || "/user.png",
                 bio: profile?.bio || "",
                 domain: profile?.domains || "",
                 yearOfInterviewExp: profile?.experienceYears || "",
