@@ -3,7 +3,6 @@ import { useUser } from "@/app/provider";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/services/supabase-client";
 import { Loader2, Pencil } from "lucide-react";
-import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -21,10 +20,8 @@ const SettingsPage = () => {
     const [selectedFile, setSelectedFile] = useState(null);
 
     const [loading, setLoading] = useState(false);
-    const [pageLoading, setPageLoading] = useState(false);
 
     const { user, setUser } = useUser();
-    const router = useRouter();
 
     useEffect(() => {
         if (user) {
