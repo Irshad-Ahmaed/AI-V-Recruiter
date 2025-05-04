@@ -22,13 +22,13 @@ const WelcomeContainer = () => {
   return (
     <div className='w-full flex items-center justify-between bg-white p-5 rounded-xl'>
       <div className=''>
-        <h2 className='font-bold text-lg'>Welcome back, <span className='text-primary'>{user?.name}</span></h2>
+        <h2 className='font-bold text-lg'>Welcome back, <span className='text-primary'>{user?.userName}</span></h2>
         <h2 className='text-muted-foreground'>AI Driven Interviews, Hassel-free Hiring</h2>
       </div>
       {/* You Need To Configure Next.mjs file for images */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <div className="relative group w-10 h-10 rounded-full cursor-pointer overflow-hidden">
+          <div className="relative group w-10 p-5 md:p-0 h-10 rounded-full cursor-pointer overflow-hidden">
             <Image
               src={user?.picture || '/user.png'}
               alt='user_img'

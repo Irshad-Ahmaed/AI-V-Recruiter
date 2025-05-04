@@ -38,6 +38,7 @@ const Provider = ({ children }) => {
                 const { data: newUser, error: insertError } = await supabase.from('Users').insert([
                     {
                         name: user.user_metadata.name,
+                        userName: user.user_metadata.name,
                         email: user.email,
                         picture: user.user_metadata.picture,
                     },
