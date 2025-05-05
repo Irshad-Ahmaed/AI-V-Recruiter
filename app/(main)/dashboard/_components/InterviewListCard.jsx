@@ -3,13 +3,22 @@ import { Button } from '@/components/ui/button';
 import { supabase } from '@/services/supabase-client';
 import { ArrowRight, Clock, Copy, Send } from 'lucide-react';
 import moment from 'moment';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
-const InterviewListCard = ({ interview }) => {
+const InterviewListCard = ({ interview, setShowDetails, setInterviewId, setFormData }) => {
     const router = useRouter();
+    const path = usePathname();
     const [expireStatus, setExpireStatus] = useState('');
+
+    const onOpenDetails = ()=> {
+        if(path === '/job-posts' && interview){
+            setFormData(interview);
+            setInterviewId(interview?.interviewId);
+            setShowDetails(true);
+        }
+    };
 
     const url = process.env.NEXT_PUBLIC_HOST_URL + interview?.interviewId;
     const copyLink = () => {
@@ -41,7 +50,6 @@ const InterviewListCard = ({ interview }) => {
         checkExpiration();
     }, [interview]);
 
-
     return (
         <div className='relative p-5 bg-white rounded-lg border space-y-2'>
             <>
@@ -54,27 +62,43 @@ const InterviewListCard = ({ interview }) => {
                     <h2 className='font-bold text-primary text-sm lg:text-xl'>{interview?.companyName}</h2>
                     <h2 className='font-bold text-sm lg:text-l'>{interview?.jobPosition}</h2>
                 </div>
-                <div className='flex items-center justify-between gap-2 text-muted-foreground'>
-                    <p className='flex gap-2 items-center text-sm lg:text-sm'><Clock className='size-3 mt-0.5 lg:size-4' /> {interview?.duration} </p>
-                    <span className={`text-sm lg:text-sm z-10 ${interview['Interview-feedback']?.length > 0 ? 'text-green-500' : 'text-primary'}`}>{interview['Interview-feedback']?.length} Candidate</span>
-                </div>
+                {path != '/job-posts' &&
+                    <div className='flex items-center justify-between gap-2 text-muted-foreground'>
+                        <p className='flex gap-2 items-center text-sm lg:text-sm'><Clock className='size-3 mt-0.5 lg:size-4' /> {interview?.duration} </p>
+                        <span className={`text-sm lg:text-sm z-10 ${interview['Interview-feedback']?.length > 0 ? 'text-green-500' : 'text-primary'}`}>{interview['Interview-feedback']?.length} Candidate</span>
+                    </div>
+                }
+                {
+                    path != '/job-posts' ?
+                        <div className='grid grid-cols-2 gap-3 mt-5 items-center'>
+                            <Button variant={'outline'}
+                                className={'flex items-center gap-2 text-xs lg:text-sm'}
+                                onClick={() => copyLink()}
+                            >
+                                <Copy className='size-3 lg:size-4' />Copy Link
+                            </Button>
+                            <Button className={'flex items-center gap-2 text-xs lg:text-sm'} onClick={() => onSend()}>
+                                <Send className='size-3 lg:size-4' />Send
+                            </Button>
+                        </div>
+                        :
+                        <div className='w-full'>
 
-                <div className='grid grid-cols-2 gap-3 mt-5 items-center'>
-                    <Button variant={'outline'}
-                        className={'flex items-center gap-2 text-xs lg:text-sm'}
-                        onClick={() => copyLink()}
-                    >
-                        <Copy className='size-3 lg:size-4' />Copy Link
-                    </Button>
-                    <Button className={'flex items-center gap-2 text-xs lg:text-sm'} onClick={() => onSend()}>
-                        <Send className='size-3 lg:size-4' />Send
-                    </Button>
-                </div>
+                            <Button variant={'outline'}
+                                className={'flex items-center gap-2 w-full text-xs lg:text-sm'}
+                                onClick={() => onOpenDetails()}
+                            >
+                                Details<ArrowRight className='size-3 lg:size-4 mt-0.5 top-1' />
+                            </Button>
+
+                        </div>
+                }
             </>
-            <div onClick={() => router.push(`/interview-details/${interview?.interviewId}`)} className='absolute hover:shadow-md top-[41%] hover:z-20 -right-5 text-white bg-gray-200 p-3 rounded-full hover:bg-primary 
-                cursor-pointer transition-colors duration-300'>
+            {path != '/job-posts' && <div onClick={() => router.push(`/interview-details/${interview?.interviewId}`)} className='absolute hover:shadow-md top-[41%] hover:z-20 -right-5 text-white bg-gray-200 p-3 rounded-full hover:bg-primary 
+                    cursor-pointer transition-colors duration-300'>
                 <ArrowRight className='size-5' />
             </div>
+            }
         </div>
     );
 };
